@@ -1,0 +1,12 @@
+{
+  "name": "Rappel",
+  "displayName": "Rappel",
+  "expo": {
+    "name": "Rappel",
+    "slug": "Rappel",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
