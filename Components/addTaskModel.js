@@ -12,7 +12,7 @@ import {globalStyle} from "../Stylsheets/Globals"
 import {addtaskstyles} from "../Stylsheets/AddtaskmodelStyles"
 import Context from "./TaskmodelContext";
 
-export default function AddtaskModel(){
+export default function AddtaskModel({navigation}){
     const [modalVisible, setModalVisible] = useState(false);
     const [tast, settask] = useContext( Context )
     const [error, setError] = useState("")
@@ -24,17 +24,18 @@ export default function AddtaskModel(){
             return setError("Task name is required")
         }else{
             var id = Math.floor((Math.random() * 100) + 1);
-
+            var item = {
+                key: id.toString(),
+                name: taskname
+            }
             settask((prev) => {
                 return [
-                    ...prev, {
-                        key: id.toString(),
-                        name: taskname
-                    }
+                    ...prev, item
                 ]
             })
 
             closemodal()
+            navigation.push('TaskDetail', item)
         }
     }
 

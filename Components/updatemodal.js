@@ -10,9 +10,12 @@ import {
 
 import { globalStyle } from "../Stylsheets/Globals"
 import { addtaskstyles } from "../Stylsheets/AddtaskmodelStyles"
+import { TaskStyle } from "../Stylsheets/Tasks"
 import Context from "./TaskmodelContext";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
-export default function UpdateTaskModal({task, id}) {
+export default function UpdateTaskModal({item}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [task, settask] = useContext(Context)
     const [error, setError] = useState("")
@@ -23,6 +26,18 @@ export default function UpdateTaskModal({task, id}) {
         if (taskname === "") {
             return setError("Task name is required")
         } else {
+            settask((prevtasks) => {
+                return prevtasks.filter(data => data.key != item.key)
+            })
+
+            settask((prev) => {
+                return [
+                    ...prev, {
+                        key : item.key,
+                        name : taskname
+                    }
+                ]
+            })
             closemodal()
         }
     }
@@ -34,7 +49,7 @@ export default function UpdateTaskModal({task, id}) {
     }
 
     return (
-        <View style={globalStyle.BottomBarbottom}>
+        <>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -47,7 +62,7 @@ export default function UpdateTaskModal({task, id}) {
                     <View style={addtaskstyles.modalView}>
                         <View style={addtaskstyles.addtaskbox}>
                             <Text style={addtaskstyles.taskboxName}>
-                                Task Name
+                                Update Task name
                             </Text>
                             {
                                 error ? (
@@ -60,7 +75,7 @@ export default function UpdateTaskModal({task, id}) {
                             }
                             <TextInput
                                 style={addtaskstyles.taskboxInput}
-                                placeholder={"type your task"}
+                                defaultValue={item.name}
                                 onChangeText={(e) => settaskname(e)}
                             />
                         </View>
@@ -71,7 +86,7 @@ export default function UpdateTaskModal({task, id}) {
                                 }}
                                 style={addtaskstyles.modelButton}
                             >
-                                <Text style={addtaskstyles.modalbuttontext}>Add</Text>
+                                <Text style={addtaskstyles.modalbuttontext}>Update</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -92,12 +107,9 @@ export default function UpdateTaskModal({task, id}) {
                     setModalVisible(true);
                 }}
             >
-                <Text style={globalStyle.BottomBarbottomText}>
-                    Add task
-                </Text>
+                <FontAwesomeIcon icon={faEdit} style={TaskStyle.updateIcon} size={29} />
             </TouchableOpacity>
-
-        </View>
+        </>
     )
 }
 

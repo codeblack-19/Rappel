@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import {globalStyle} from "../Stylsheets/Globals"
@@ -10,16 +10,21 @@ import Context from '../Components/TaskmodelContext';
 
 export default function Home({navigation}) {
   const [task, settask] = useContext(Context)
+  const [dummy, setdummy] = useState(task? task : {})
     const preshandler = () => {
         navigation.push('Settings')
     }
 
-    // function searchtask(e){
-    //   settask((prev) => {
-    //     return prev.filter((data) => data.name === e);
-    //   })
+    function searchtask(e){
+      if(e === ''){
+        setdummy(task);
+      }else{
+        setdummy((prev) => {
+          return prev.filter((data) => data.name.toLowerCase().indexOf(e.toLowerCase()) > -1 );
+        })
+      }
 
-    // }
+    }
 
   return (
     <View style={globalStyle.container}>
@@ -28,7 +33,7 @@ export default function Home({navigation}) {
             <TextInput
                 style={globalStyle.searchBox}
                 placeholder = {"Search"}
-                // onChangeText = {(e) => searchtask(e)}
+                onChangeText = {(e) => searchtask(e)}
             />
         </View>
 
@@ -42,13 +47,13 @@ export default function Home({navigation}) {
             </Text>
           </View>
 
-          <Tasks navigation={navigation} />
+          <Tasks navigation={navigation} dummytask={dummy}/>
           
         </View>
         
         <View style={globalStyle.BottomBar}>
 
-          <AddtaskModel />
+          <AddtaskModel navigation={navigation} />
           <TouchableOpacity style={globalStyle.BottomBarbottom} onPress={preshandler}>
             <Text style={globalStyle.BottomBarbottomText}>
               Settings

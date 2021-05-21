@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faArrowRight, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import Context from "./TaskmodelContext"
 import Swipeable from "react-native-gesture-handler/Swipeable"
+import UpdateTaskModal from "./updatemodal"
 
 
-export default function Tasks({navigation}){
+export default function Tasks({ navigation, dummytask}){
     const [tasks, settasks] = useContext(Context)
     
     function removeTask (key){
@@ -26,12 +27,10 @@ export default function Tasks({navigation}){
         )
     }
 
-    function swipeRightswipe(id){
+    function swipeRightswipe(item){
         return (
             <View style={TaskStyle._du_Button}>
-                <TouchableOpacity>
-                    <FontAwesomeIcon icon={faEdit} style={TaskStyle.updateIcon} size={29} />
-                </TouchableOpacity>
+                <UpdateTaskModal item={item}/>
             </View>
         )
     }
@@ -39,11 +38,11 @@ export default function Tasks({navigation}){
     return (
         <View style={TaskStyle.holdBox}>
             <FlatList  
-                data = {tasks}
+                data = {dummytask}
                 renderItem = {({item}) => 
                     <Swipeable 
                         renderLeftActions={() => swipeLeftswipe(item.key)}  
-                        renderRightActions={() => swipeRightswipe(item.key)}
+                        renderRightActions={() => swipeRightswipe(item)}
                     >
                         <View style={TaskStyle.taskview}>
                             <TouchableOpacity style={TaskStyle.tasksetting}
