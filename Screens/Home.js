@@ -43,7 +43,7 @@ export default function Home({navigation}) {
               Tasks
             </Text>
             <Text style={globalStyle.headerText}>
-              {task.length}
+              {dummy.length}
             </Text>
           </View>
 
