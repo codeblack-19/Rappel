@@ -4,9 +4,42 @@ import React, { useState } from "react"
 import { View, Text, TouchableOpacity } from 'react-native'
 import { MainSetting } from "../../Stylsheets/Settings"
 import { RMD } from "../../Stylsheets/TaskInfo"
+import { Audio } from "expo-av"
+import { useEffect } from "react"
 
 export default function Tones(){
     const [tone, settone] = useState('001')
+    const [sound, setsound] = useState('');
+
+    async function playtone1(){
+        
+        const { sound } = await Audio.Sound.createAsync(
+            require(`../AudioCompo/Squeaky-toy-sound-effect.mp3`)
+        )
+
+        setsound(sound)
+
+        await sound.playAsync();
+    }
+
+    async function playtone2() {
+
+        const { sound } = await Audio.Sound.createAsync(
+            require(`../AudioCompo/Car-crash-sound-effect.mp3`)
+        )
+
+        setsound(sound)
+
+        await sound.playAsync();
+    }
+
+    useEffect(() => {
+        return sound 
+            ? () => {
+                sound.unloadAsync()
+            } : undefined
+    },[sound])
+
     return(
         <View style={MainSetting.toneContainer}>
             <View style={RMD._rmDhead}>
@@ -28,12 +61,12 @@ export default function Tones(){
                             )
                         }
                         <Text style={{ fontSize: 19, fontWeight: '500', color: '#AF5B60', marginLeft: 5}}>
-                            Jingle bell
+                            Squeaky toy
                         </Text>
                     </TouchableOpacity>
                     
                     <View style={MainSetting.controllbtns}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => { playtone1() }}>
                             <FontAwesomeIcon icon={faPlay} size={25} color={'#AF5B60'} />
                         </TouchableOpacity>
                         <TouchableOpacity>
@@ -51,58 +84,12 @@ export default function Tones(){
                             )
                         }
                         <Text style={{ fontSize: 19, fontWeight: '500', color: '#AF5B60', marginLeft: 5 }}>
-                            Umbrella
+                            Car crash
                         </Text>
                     </TouchableOpacity>
 
                     <View style={MainSetting.controllbtns}>
-                        <TouchableOpacity>
-                            <FontAwesomeIcon icon={faPlay} size={25} color={'#AF5B60'} />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <FontAwesomeIcon icon={faStop} size={25} color={'#AF5B60'} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={MainSetting._a_tone_default} >
-                    <TouchableOpacity style={MainSetting._name_tick} onPress={() => settone('003')}>
-                        {
-                            tone === '003' ? (
-                                <FontAwesomeIcon icon={faCheck} size={20} style={{ marginRight: 5, marginLeft: 5 }} color={'#AF5B60'} />
-                            ) : (
-                                <Text></Text>
-                            )
-                        }
-                        <Text style={{ fontSize: 19, fontWeight: '500', color: '#AF5B60', marginLeft: 5 }}>
-                            He's a pirate
-                        </Text>
-                    </TouchableOpacity>
-
-                    <View style={MainSetting.controllbtns}>
-                        <TouchableOpacity>
-                            <FontAwesomeIcon icon={faPlay} size={25} color={'#AF5B60'} />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <FontAwesomeIcon icon={faStop} size={25} color={'#AF5B60'} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={MainSetting._a_tone_default} >
-                    <TouchableOpacity style={MainSetting._name_tick} onPress={() => settone('004')}>
-                        {
-                            tone === '004' ? (
-                                <FontAwesomeIcon icon={faCheck} size={20} style={{ marginRight: 5, marginLeft: 5 }} color={'#AF5B60'} />
-                            ) : (
-                                <Text></Text>
-                            )
-                        }
-                        <Text style={{ fontSize: 19, fontWeight: '500', color: '#AF5B60', marginLeft: 5 }}>
-                            Singing One
-                        </Text>
-                    </TouchableOpacity>
-
-                    <View style={MainSetting.controllbtns}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => { playtone2() }}>
                             <FontAwesomeIcon icon={faPlay} size={25} color={'#AF5B60'} />
                         </TouchableOpacity>
                         <TouchableOpacity>
